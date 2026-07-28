@@ -32,9 +32,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Tests
+      - name: Show Project Structure
         run: |
-          pytest -q
+          pwd
+          ls -R
+
+      - name: Run Tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python -m pytest -q
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v8
