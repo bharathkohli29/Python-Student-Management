@@ -44,7 +44,13 @@ jobs:
           python -m pytest -q
 
       - name: SonarQube Scan
+        if: ${{ secrets.SONAR_TOKEN && secrets.SONAR_HOST_URL }}
         uses: SonarSource/sonarqube-scan-action@v8
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      - name: Skip SonarQube Scan
+        if: ${{ !secrets.SONAR_TOKEN || !secrets.SONAR_HOST_URL }}
+        run: |
+          echo "Skipping SonarQube scan because SONAR_TOKEN or SONAR_HOST_URL is not configured."
